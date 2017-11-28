@@ -1,0 +1,21 @@
+const express = require('express')
+const bodyParser = require('body-parser')
+const errorHandler = require('errorhandler')
+const morgan = require('morgan')
+store = {}
+store.posts = []
+const port = 3000
+const app = express()
+const routes = require('./routes')
+app.use(bodyParser.json())
+app.use(errorHandler())
+app.use(morgan('dev'))
+app.get('/posts', routes.posts.getPosts)
+app.post('/posts', routes.posts.postPost)
+app.put('/posts/:postId', routes.posts.putPost)
+app.delete('/posts/:postId', routes.posts.deletePost)
+app.get('/posts/:postId/comments', routes.comments.getComments)
+app.post('/posts/:postId/comments', routes.comments.addComment)
+app.put('/posts/:postId/comments/:commentId', routes.comments.updateComment)
+app.delete('/posts/:postId/comments/commentId', routes.comments.removeComment)
+app.listen(port)
